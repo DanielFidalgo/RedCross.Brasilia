@@ -2,6 +2,7 @@ import {Injectable, Inject} from "@angular/core";
 import * as firebase from 'firebase/app';
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireAuthModule, AngularFireAuth } from 'angularfire2/auth';
+import { AngularFireDatabase } from 'angularfire2/database';
 import {UserInfo} from "./user-info";
 import { Observable, Subject, BehaviorSubject } from "rxjs";
 
@@ -12,13 +13,15 @@ export class AuthService {
         email: null,
         displayName: null,
         providerId: null,
-        uid: null
+        uid: null,
+        data: null
     };
 
     userInfo = new BehaviorSubject<UserInfo>(AuthService.UNKNOWN_USER);
     private user: firebase.User;
+    private userData: object;
 
-    constructor(private angularFireAuth: AngularFireAuth) {
+    constructor(private angularFireAuth: AngularFireAuth, private agularFireDatabase: AngularFireDatabase) {
         this.angularFireAuth.authState.subscribe(user => {
             // console.log("user: ", JSON.stringify(user));
             this.user = user;
@@ -31,6 +34,11 @@ export class AuthService {
                 userInfo.providerId = user.providerId;
                 userInfo.photoURL = user.photoURL;
                 userInfo.uid = user.uid;
+                
+                this.userData = this.agularFireDatabase.object('users/'+user.uid);
+                if(this.userData !=null){
+                    userInfo.data = this.userData;
+                }
             } else {
                 this.user = null;
                 userInfo.isAnonymous = true;
@@ -130,6 +138,14 @@ export class AuthService {
             this.angularFireAuth
                 .auth
                 .signInWithPopup(new firebase.auth.TwitterAuthProvider())
+                .then(auth => result.next("success"))
+                .catch(err => result.error(err));
+            return result.asObservable();
+        }
+        else if (provider === "facebook") {
+            this.angularFireAuth
+                .auth
+                .signInWithPopup(new firebase.auth.FacebookAuthProvider())
                 .then(auth => result.next("success"))
                 .catch(err => result.error(err));
             return result.asObservable();

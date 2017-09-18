@@ -35,3 +35,32 @@ h3 {
     text-align: center;
     line-height: 300%;
 }
+.input-line{
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid #000000;
+        display: block;
+    width: 100%;
+    height: 34px;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.42857143;
+    transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+}
+.input-line:focus{
+    outline: none;
+}
+input:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0 30px white inset;
+}
+.logoLogin{
+ 
+    background: url(/assets/img/logo.png);
+    background-size: auto auto;
+    background-repeat: no-repeat;
+    background-position: center;
+    min-height: 100px;
+    /*padding: 0px 80px;
+    margin-left: 0px !important;
+    margin-top: 5px !important;*/
+}

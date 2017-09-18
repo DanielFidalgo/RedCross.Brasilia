@@ -1,39 +1,82 @@
-<h3>Please Log In</h3>
+<div class="row"><div class=" col-xs-12 col-sm-12 col-md-12 logoLogin"></div></div>
+<h3>Log in</h3>
 <div class="row">
-    <div class="col-xs-6 col-sm-6 col-md-6">
-        <a href="#" class="btn btn-lg btn-primary btn-block" (click)="loginVia($event, 'twitter')">Twitter</a>
+    <div class="col-xs-0 col-sm-3 col-md-3">
+        
     </div>
-    <div class="col-xs-6 col-sm-6 col-md-6">
+    <div class="col-xs-6 col-sm-3 col-md-3">
+        <a href="#" class="btn btn-lg btn-primary btn-block" (click)="loginVia($event, 'facebook')">facebook</a>
+    </div>
+    <div class="col-xs-6 col-sm-3 col-md-3">
         <a href="#" class="btn btn-lg btn-info btn-block" (click)="loginVia($event, 'google')">Google</a>
+    </div>
+    <div class="col-xs-0 col-sm-3 col-md-3">
+        
     </div>
 </div>
 <div class="login-or">
     <hr class="hr-or">
-    <span class="span-or">or</span>
+    <span class="span-or">OU</span>
 </div>
 
 <form [formGroup]="form" role="form" (ngSubmit)="login()" novalidate>
-    <div class="form-group" [class.has-error]="email.invalid && email.touched">
-        <label for="email">Email</label>
-        <input [formControl]="email" required type="text" class="form-control" id="email" name="email">
-        <div class="help-block">
-            <ul class="list-unstyled">
-                <li *ngIf="email.valid || email.pristine">Enter your email address</li>
-                <li *ngIf="email.dirty && email.hasError('required')">An email address is required</li>
-            </ul>
+    <div class="form-group row" [class.has-error]="email.invalid && email.touched">
+        <div class="col-xs-0 col-sm-3 col-md-3">
+        
+        </div>
+        <div class="col-xs-0 col-sm-6 col-md-6">
+            <label for="email">Email</label>
+            <input [formControl]="email" required type="text" class="input-line" id="email" name="email">
+            <div class="help-block">
+                <ul class="list-unstyled">
+                    <li *ngIf="email.valid || email.pristine">Entre seu endereço de e-mail</li>
+                    <li *ngIf="email.dirty && email.hasError('required')">Um endereço de e-mail é necessario</li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-xs-0 col-sm-3 col-md-3">
+        
         </div>
     </div>
-    <div class="form-group" [class.has-error]="password.invalid && password.touched">
-        <label for="password">Password</label>
-        <input [formControl]="password" type="password" class="form-control" id="password" name="password">
+    <div class="form-group row" [class.has-error]="password.invalid && password.touched">
+        <div class="col-xs-0 col-sm-3 col-md-3">
+        
+        </div>
+        <div class="col-xs-0 col-sm-6 col-md-6">
+        <label for="password">Senha</label>
+        <input [formControl]="password" type="password" class="input-line" id="password" name="password">
         <div class="help-block">
+            <a class="pull-right" [routerLink]="['reset-password']">
+                Esqueci minha senha
+            </a>
             <ul class="list-unstyled">
-                <li *ngIf="password.valid || password.pristine">Enter your password</li>
-                <li *ngIf="password.dirty && password.hasError('required')">A password is required</li>
+                <li *ngIf="password.valid || password.pristine">Entre uma Senha</li>
+                <li *ngIf="password.dirty && password.hasError('required')">Uma senha é necessaria</li>
             </ul>
         </div>
+        </div>
+        <div class="col-xs-0 col-sm-3 col-md-3">
+        
+        </div>
     </div>
-    <button type="submit" class="btn btn btn-primary">
-        Log In
-    </button>
+    <div row>
+        <div class="col-xs-0 col-sm-3 col-md-3">
+        
+        </div>
+        <div class="col-xs-1 col-sm-1 col-md-1">
+        <button type="submit" class="btn btn btn-primary">
+            Log In
+        </button>
+        </div>
+        <div class="col-xs-1 col-sm-1 col-md-1">
+        <a class="btn btn btn-primary" [routerLink]="['register']">
+            cadastre-se
+        </a>
+        </div>
+
+        <div class="col-xs-7 col-sm-7 col-md-7">
+        
+        </div> 
+        
+    </div>
 </form>

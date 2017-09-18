@@ -1,5 +1,6 @@
 import {Component, EventEmitter, Output} from "@angular/core";
 import {AuthService} from "app/shared/auth.service";
+import {Router} from "@angular/router";
 import {FormBuilder, Validators, AbstractControl, FormGroup} from "@angular/forms";
 
 @Component({
@@ -14,7 +15,7 @@ export class LoginUserComponent {
     @Output() onSuccess = new EventEmitter();
     @Output() onError = new EventEmitter();
 
-    constructor(private authService: AuthService, private fb: FormBuilder) {
+    constructor(private authService: AuthService, private fb: FormBuilder, private router: Router) {
         this.form = fb.group({
             'email': ['', Validators.required],
             'password': ['', Validators.required]
@@ -39,7 +40,7 @@ export class LoginUserComponent {
     loginVia($event, provider: string) {
         $event.preventDefault();
         this.authService.loginViaProvider(provider).subscribe(
-            () => this.onSuccess.emit(),
+            () => this.router.navigate['register'],
             err => this.onError.emit(err)
         );
     }

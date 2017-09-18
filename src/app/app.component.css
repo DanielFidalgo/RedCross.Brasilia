@@ -1,0 +1,16 @@
+.navbar-rc{
+
+    border-style: none none solid none;
+    border-width: 0px 0px 1px 0px;
+    border-bottom-color: black;
+}
+
+.logo{
+
+    background: url(/assets/img/logo.png);
+    background-size: 150px auto;
+    background-repeat: no-repeat;
+    padding: 0px 80px;
+    margin-left: 0px !important;
+    margin-top: 5px !important;
+}

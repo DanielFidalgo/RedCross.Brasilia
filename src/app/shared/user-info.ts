@@ -5,4 +5,5 @@ export class UserInfo {
     photoURL?: string;
     providerId: string;
     uid: string;
+    data:object;
 }

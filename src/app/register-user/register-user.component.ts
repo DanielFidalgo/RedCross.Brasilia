@@ -1,5 +1,6 @@
 import {Component, OnInit, EventEmitter, Output} from "@angular/core";
 import {AuthService} from "app/shared/auth.service";
+import {DatabaseService} from "app/shared/database.service";
 import { Observable, BehaviorSubject } from "rxjs";
 import {FormGroup, AbstractControl, FormBuilder, Validators} from "@angular/forms";
 
@@ -19,6 +20,7 @@ export class RegisterUserComponent {
     @Output() onError = new EventEmitter();
 
     constructor(private authService: AuthService,
+                private databaseService: DatabaseService,
                 private fb: FormBuilder) {
         this.form = fb.group({
             'name': ['', Validators.required],
@@ -40,6 +42,9 @@ export class RegisterUserComponent {
             this.authService.createUser(this.email.value, this.password.value, this.name.value)
                 .subscribe(
                     () => {
+                        this.authService.currentUser().subscribe((userInfo)=>{
+                            this.databaseService.newRegistry(userInfo);
+                        },err=>{});
                         this.onSuccess.emit("success");
                         this.form.reset();
                     },

@@ -1,56 +1,55 @@
-<h3>Register</h3>
+<div class="row" *ngIf="!(isLoggedIn|async)"><div class=" col-xs-12 col-sm-12 col-md-12 logoLogin"></div></div>
+<h3>Cadastro</h3>
 <form [formGroup]="form" role="form" (ngSubmit)="onSubmit()" novalidate>
-    <div class="form-group" [class.has-error]="name.invalid && name.touched">
-        <label for="name" class="control-label">Name</label>
-        <input [formControl]="name" required type="text" class="form-control" id="name" name="name">
-        <div class="help-block">
-            <ul class="list-unstyled">
-                <li *ngIf="name.valid || name.pristine">Enter your name</li>
-                <li *ngIf="name.dirty && name.hasError('required')">A name is required</li>
-            </ul>
+    <div class="row"> 
+        <div class="form-group col-xs-6 col-sm-6 col-md-6" [class.has-error]="name.invalid && name.touched">
+            <label for="name" class="control-label">Nome</label>
+            <input [formControl]="name" required type="text" class=" input-line" id="name" name="name">
+            <div class="help-block">
+                <ul class="list-unstyled">
+                    <li *ngIf="name.valid || name.pristine">Preencha o seu nome</li>
+                    <li *ngIf="name.dirty && name.hasError('required')">Um nome precisa ser preenchido</li>
+                </ul>
+            </div>
+        </div>
+        <div class="form-group col-xs-6 col-sm-6 col-md-6" [class.has-error]="email.invalid && email.touched">
+            <label for="email" class="control-label">E-mail</label>
+            <input [formControl]="email" required type="email" class=" input-line" id="email" name="email">
+            <div class="help-block">
+                <ul class="list-unstyled">
+                    <li *ngIf="email.valid || email.pristine">Entre seu endereço de e-mail</li>
+                    <li *ngIf="email.dirty && email.hasError('required')">Um e-mail precisa ser preenchido</li>
+                    <li *ngIf="email.dirty && email.hasError('email')">Por favor, preencha um e-mail válido</li>
+                </ul>
+            </div>
         </div>
     </div>
-    <div class="form-group" [class.has-error]="email.invalid && email.touched">
-        <label for="email" class="control-label">Email</label>
-        <input [formControl]="email" required type="email" class="form-control" id="email" name="email">
-        <div class="help-block">
-            <ul class="list-unstyled">
-                <li *ngIf="email.valid || email.pristine">Enter your email address</li>
-                <li *ngIf="email.dirty && email.hasError('required')">An email address is required</li>
-                <li *ngIf="email.dirty && email.hasError('email')">Please enter a valid email address</li>
-            </ul>
+    <div class="row"> 
+        <div class="form-group col-xs-6 col-sm-6 col-md-6" [class.has-error]="password.invalid && password.touched">
+            <label for="password">Senha</label>
+            <input [formControl]="password" type="password" required class=" input-line" id="password" name="password">
+            <div class="help-block">
+                <ul class="list-unstyled">
+                    <li *ngIf="password.dirty && password.valid || password.pristine">Entre sua senha</li>
+                    <li *ngIf="password.dirty && password.hasError('required')">Uma senha precisa ser preenchida</li>
+                </ul>
+            </div>
         </div>
-    </div>
-    <div class="form-group" [class.has-error]="password.invalid && password.touched">
-        <label for="password">Password</label>
-        <input [formControl]="password" type="password" required class="form-control" id="password" name="password">
-        <div class="help-block">
-            <ul class="list-unstyled">
-                <li *ngIf="password.dirty && password.valid || password.pristine">Enter your password</li>
-                <li *ngIf="password.dirty && password.hasError('required')">A password is required</li>
-            </ul>
-        </div>
-    </div>
-    <div class="form-group"
-         [class.has-error]="(password2.invalid || form.hasError('mismatchedPasswords')) && password2.touched">
-        <label for="password2">Repeat Password</label>
-        <input [formControl]="password2" type="password" required class="form-control" id="password2"
-               name="password2">
-        <div class="help-block">
-            <ul class="list-unstyled">
-                <li *ngIf="(password2.valid && !form.hasError('mismatchedPasswords')) || password2.pristine">Repeat
-                    your
-                    password
-                </li>
-                <li *ngIf="password2.dirty && password2.hasError('required')">A password is required</li>
-                <li *ngIf="password2.dirty && password2.valid && form.hasError('mismatchedPasswords')">Passwords
-                    don't
-                    match
-                </li>
-            </ul>
+        <div class="form-group col-xs-6 col-sm-6 col-md-6"
+            [class.has-error]="(password2.invalid || form.hasError('mismatchedPasswords')) && password2.touched">
+            <label for="password2">Confirme a senha</label>
+            <input [formControl]="password2" type="password" required class=" input-line" id="password2"
+                name="password2">
+            <div class="help-block">
+                <ul class="list-unstyled">
+                    <li *ngIf="(password2.valid && !form.hasError('mismatchedPasswords')) || password2.pristine">Repita sua senha</li>
+                    <li *ngIf="password2.dirty && password2.hasError('required')">Uma senha precisa ser preenchida</li>
+                    <li *ngIf="password2.dirty && password2.valid && form.hasError('mismatchedPasswords')">Senhas não são iguais</li>
+                </ul>
+            </div>
         </div>
     </div>
     <button type="submit" class="btn btn btn-primary">
-        Register
+        Salvar
     </button>
 </form>

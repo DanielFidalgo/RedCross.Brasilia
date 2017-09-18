@@ -8,6 +8,7 @@ import { AngularFireModule } from 'angularfire2';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
 import { AngularFireAuthModule } from 'angularfire2/auth';
 import {AuthService} from "app/shared/auth.service";
+import {DatabaseService} from "app/shared/database.service";
 import {LoginUserComponent} from "app/login-user/login-user.component";
 import {DisplayUserComponent} from "app/display-user/display-user.component";
 import {RegisterUserComponent} from "app/register-user/register-user.component";
@@ -54,7 +55,7 @@ const routes: Routes = [
         AngularFireAuthModule,
         RouterModule.forRoot(routes)
     ],
-    providers: [AuthService, LoggedInGuard],
+    providers: [AuthService,DatabaseService, LoggedInGuard],
     bootstrap: [AppComponent]
 })
 export class AppModule {
