@@ -17,8 +17,7 @@ export class DatabaseService {
 
     newRegistry(userInfo: UserInfo){
 
-        
-        this.agularFireDatabase.list("users").push({uid: userInfo.uid!=null?userInfo.uid:"fail", cadastro: userInfo.data!=null?"tem um objeto estranho":"fail"})
+        this.agularFireDatabase.list("users").push({uid: userInfo.uid!=null?userInfo.uid:"fail", cadastro: userInfo.data})
     }
 
 

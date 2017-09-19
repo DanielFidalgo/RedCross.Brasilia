@@ -62,14 +62,14 @@ export class RegisterUserComponent {
             this.authService.createUser(this.email.value, this.password.value, this.name.value)
                 .subscribe(
                     () => {
-                        this.authService.currentUser().subscribe((userInfo)=>{
-                            this.databaseService.newRegistry(userInfo);
-                        },err=>{});
+                        this.saveUserdb();
                         this.onSuccess.emit("success");
                         this.form.reset();
                     },
                     err => this.onError.emit(err)
                 );
+            }else{
+                this.saveUserdb();
             }
         }
     }
@@ -85,5 +85,21 @@ export class RegisterUserComponent {
                 };
             }
         }
+    }
+
+    saveUserdb(){
+        this.authService
+        .currentUser()
+        .subscribe((userInfo)=>{
+                    let data = {
+                        nome: this.name.value,
+                        email: this.email.value,
+                        cpf: this.cpf.value,
+                        rg: this.rg.value,
+                    }   
+                    userInfo.data = data;              
+                    this.databaseService.newRegistry(userInfo); 
+        },err=>{});
+        
     }
 }
