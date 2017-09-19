@@ -22,6 +22,7 @@
     "@angular/router": "4.3.6",
     "angularfire2": "4.0.0-rc.2",
     "bootstrap": "3.3.7",
+    "cep-promise": "^2.0.5",
     "core-js": "2.4.1",
     "firebase": "4.0.0",
     "ngx-bootstrap": "1.9.1",

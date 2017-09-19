@@ -21,6 +21,8 @@ import {AllInOnePageComponent} from "./pages/all-in-one-page.component";
 import {LoginPageComponent} from "./pages/login-page.component";
 import { LoggedInGuard } from "app/shared/logged-in-guard";
 import { DashboardPageComponent } from './pages/dashboard-page.component';
+import {MaskDirective  } from "app/shared/mask.directive";
+
 
 const routes: Routes = [
     { path: 'register', component: RegisterPageComponent },
@@ -42,7 +44,8 @@ const routes: Routes = [
         RegisterPageComponent,
         AllInOnePageComponent,
         LoginPageComponent,
-        DashboardPageComponent
+        DashboardPageComponent,
+        MaskDirective
     ],
     imports: [
         BrowserModule,
@@ -50,13 +53,15 @@ const routes: Routes = [
         ReactiveFormsModule,
         HttpModule,
         AlertModule.forRoot(),
-        AngularFireModule.initializeApp(firebaseConfig, "RedCross Brasilia"),
+        AngularFireModule.initializeApp(firebaseConfig, "cruzvermelhadf"),
         AngularFireDatabaseModule,
         AngularFireAuthModule,
         RouterModule.forRoot(routes)
     ],
     providers: [AuthService,DatabaseService, LoggedInGuard],
-    bootstrap: [AppComponent]
+    bootstrap: [AppComponent],
+    exports: [ MaskDirective]
+    
 })
 export class AppModule {
 }

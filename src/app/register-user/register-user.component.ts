@@ -13,6 +13,9 @@ export class RegisterUserComponent {
     form: FormGroup;
     email: AbstractControl;
     name: AbstractControl;
+    cpf: AbstractControl;
+    rg: AbstractControl;
+    telefone: AbstractControl;
     password: AbstractControl;
     password2: AbstractControl;
 
@@ -28,6 +31,9 @@ export class RegisterUserComponent {
                 Validators.required,
                 Validators.email]
             )],
+            'cpf': ['', Validators.required],
+            'rg': ['', Validators.required],
+            'telefone': ['', Validators.required],
             'password': ['', Validators.required],
             'password2': ['', Validators.required]
         }, {validator: this.matchingPasswords('password', 'password2')});
@@ -35,6 +41,9 @@ export class RegisterUserComponent {
         this.email = this.form.controls['email'];
         this.password = this.form.controls['password'];
         this.password2 = this.form.controls['password2'];
+        this.cpf = this.form.controls['cpf'];
+        this.rg = this.form.controls['rg'];
+        this.telefone = this.form.controls['telefone'];
     }
 
     onSubmit() {

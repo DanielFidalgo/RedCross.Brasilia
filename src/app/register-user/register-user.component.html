@@ -25,6 +25,39 @@
         </div>
     </div>
     <div class="row"> 
+        <div class="form-group col-xs-4 col-sm-4 col-md-4" [class.has-error]="cpf.invalid && cpf.touched">
+            <label for="cpf" class="control-label">CPF</label>
+            <input [formControl]="cpf" required type="text" class=" input-line" id="cpf" name="cpf" mask="999.999.999-99">
+            <div class="help-block">
+                <ul class="list-unstyled">
+                    <li *ngIf="cpf.valid || cpf.pristine">Preencha o seu CPF</li>
+                    <li *ngIf="cpf.dirty && cpf.hasError('required')">Um CPF precisa ser preenchido</li>
+                </ul>
+            </div>
+        </div>
+        <div class="form-group col-xs-4 col-sm-4 col-md-4" [class.has-error]="rg.invalid && rg.touched">
+            <label for="rg" class="control-label">RG</label>
+            <input [formControl]="rg" required type="text" class=" input-line" id="rg" name="rg">
+            <div class="help-block">
+                <ul class="list-unstyled">
+                    <li *ngIf="rg.valid || rg.pristine">Preencha o seu RG</li>
+                    <li *ngIf="rg.dirty && rg.hasError('required')">Um RG precisa ser preenchido</li>
+                </ul>
+            </div>
+        </div>
+        <div class="form-group col-xs-4 col-sm-4 col-md-4" [class.has-error]="telefone.invalid && telefone.touched">
+            <label for="telefone" class="control-label">Telefone</label>
+            <input [formControl]="telefone" required type="text" class=" input-line" id="telefone" name="telefone" mask="(99)99999-9999">
+            <div class="help-block">
+                <ul class="list-unstyled">
+                    <li *ngIf="telefone.valid || telefone.pristine">Preencha o seu telefone</li>
+                    <li *ngIf="telefone.dirty && telefone.hasError('required')">Um telefone precisa ser preenchido</li>
+                    
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="row"> 
         <div class="form-group col-xs-6 col-sm-6 col-md-6" [class.has-error]="password.invalid && password.touched">
             <label for="password">Senha</label>
             <input [formControl]="password" type="password" required class=" input-line" id="password" name="password">
