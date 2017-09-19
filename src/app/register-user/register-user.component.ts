@@ -58,6 +58,7 @@ export class RegisterUserComponent {
 
     onSubmit() {
         if (this.form.valid) {
+            if(!this.isLoggedIn.value){
             this.authService.createUser(this.email.value, this.password.value, this.name.value)
                 .subscribe(
                     () => {
@@ -69,6 +70,7 @@ export class RegisterUserComponent {
                     },
                     err => this.onError.emit(err)
                 );
+            }
         }
     }
 
