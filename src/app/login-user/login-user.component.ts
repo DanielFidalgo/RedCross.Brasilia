@@ -40,7 +40,7 @@ export class LoginUserComponent {
     loginVia($event, provider: string) {
         $event.preventDefault();
         this.authService.loginViaProvider(provider).subscribe(
-            () => this.router.navigate['register'],
+            () => this.router.navigate(['register']),
             err => this.onError.emit(err)
         );
     }

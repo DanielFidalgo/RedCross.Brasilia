@@ -34,8 +34,12 @@ export class AuthService {
                 userInfo.providerId = user.providerId;
                 userInfo.photoURL = user.photoURL;
                 userInfo.uid = user.uid;
-                
-                this.userData = this.agularFireDatabase.object('users/'+user.uid);
+                let query: firebase.database.Query
+                var ref = firebase.database().ref("users");
+                ref.child("uid").equalTo(user.uid).on("child_added", function(snapshot) {
+                        this.userData = snapshot;
+                });
+                 
                 if(this.userData !=null){
                     userInfo.data = this.userData;
                 }

@@ -18,6 +18,7 @@ export class RegisterUserComponent {
     telefone: AbstractControl;
     password: AbstractControl;
     password2: AbstractControl;
+    isLoggedIn = new BehaviorSubject<boolean>(false);
 
     @Output() onSuccess = new EventEmitter();
     @Output() onError = new EventEmitter();
@@ -25,6 +26,7 @@ export class RegisterUserComponent {
     constructor(private authService: AuthService,
                 private databaseService: DatabaseService,
                 private fb: FormBuilder) {
+        this.authService.isLoggedIn().subscribe(this.isLoggedIn);
         this.form = fb.group({
             'name': ['', Validators.required],
             'email': ['', Validators.compose([
@@ -44,6 +46,14 @@ export class RegisterUserComponent {
         this.cpf = this.form.controls['cpf'];
         this.rg = this.form.controls['rg'];
         this.telefone = this.form.controls['telefone'];
+        if(this.isLoggedIn.value){
+            this.authService.currentUser().subscribe((userInfo)=>{
+                            this.name.setValue(userInfo.displayName);
+                            this.email.setValue(userInfo.email);
+                            this.email.disable;
+                        },err=>{});
+        }
+        
     }
 
     onSubmit() {

@@ -2,7 +2,7 @@
 <h3>Cadastro</h3>
 <form [formGroup]="form" role="form" (ngSubmit)="onSubmit()" novalidate>
     <div class="row"> 
-        <div class="form-group col-xs-6 col-sm-6 col-md-6" [class.has-error]="name.invalid && name.touched">
+        <div class="form-group col-xs-5 col-sm-5 col-md-5" [class.has-error]="name.invalid && name.touched">
             <label for="name" class="control-label">Nome</label>
             <input [formControl]="name" required type="text" class=" input-line" id="name" name="name">
             <div class="help-block">
@@ -12,9 +12,20 @@
                 </ul>
             </div>
         </div>
-        <div class="form-group col-xs-6 col-sm-6 col-md-6" [class.has-error]="email.invalid && email.touched">
+        <div class="form-group col-xs-5 col-sm-5 col-md-5" [class.has-error]="email.invalid && email.touched">
             <label for="email" class="control-label">E-mail</label>
             <input [formControl]="email" required type="email" class=" input-line" id="email" name="email">
+            <div class="help-block">
+                <ul class="list-unstyled">
+                    <li *ngIf="email.valid || email.pristine">Entre seu endereço de e-mail</li>
+                    <li *ngIf="email.dirty && email.hasError('required')">Um e-mail precisa ser preenchido</li>
+                    <li *ngIf="email.dirty && email.hasError('email')">Por favor, preencha um e-mail válido</li>
+                </ul>
+            </div>
+        </div>
+        <div class="form-group col-xs-2 col-sm-2 col-md-2" [class.has-error]="email.invalid && email.touched">
+            <label for="email" class="control-label">E-mail</label>
+            
             <div class="help-block">
                 <ul class="list-unstyled">
                     <li *ngIf="email.valid || email.pristine">Entre seu endereço de e-mail</li>
@@ -46,7 +57,7 @@
             </div>
         </div>
         <div class="form-group col-xs-4 col-sm-4 col-md-4" [class.has-error]="telefone.invalid && telefone.touched">
-            <label for="telefone" class="control-label">Telefone</label>
+            <label for="telefone" class="control-label">Telefone Celular</label>
             <input [formControl]="telefone" required type="text" class=" input-line" id="telefone" name="telefone" mask="(99)99999-9999">
             <div class="help-block">
                 <ul class="list-unstyled">
@@ -57,7 +68,7 @@
             </div>
         </div>
     </div>
-    <div class="row"> 
+    <div class="row" *ngIf="!(isLoggedIn|async)"> 
         <div class="form-group col-xs-6 col-sm-6 col-md-6" [class.has-error]="password.invalid && password.touched">
             <label for="password">Senha</label>
             <input [formControl]="password" type="password" required class=" input-line" id="password" name="password">
