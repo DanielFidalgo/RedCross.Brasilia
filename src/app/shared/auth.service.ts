@@ -1,6 +1,6 @@
 import {Injectable, Inject} from "@angular/core";
 import * as firebase from 'firebase/app';
-import { AngularFireModule } from 'angularfire2';
+import { AngularFireModule} from 'angularfire2';
 import { AngularFireAuthModule, AngularFireAuth } from 'angularfire2/auth';
 import { AngularFireDatabase } from 'angularfire2/database';
 import {UserInfo} from "./user-info";
@@ -34,15 +34,9 @@ export class AuthService {
                 userInfo.providerId = user.providerId;
                 userInfo.photoURL = user.photoURL;
                 userInfo.uid = user.uid;
-                let query: firebase.database.Query
-                var ref = firebase.database().ref("users");
-                ref.child("uid").equalTo(user.uid).on("child_added", function(snapshot) {
-                        this.userData = snapshot;
+                this.agularFireDatabase.object("users/"+user.uid).subscribe(data=>{
+                    userInfo.data = data;
                 });
-                 
-                if(this.userData !=null){
-                    userInfo.data = this.userData;
-                }
             } else {
                 this.user = null;
                 userInfo.isAnonymous = true;

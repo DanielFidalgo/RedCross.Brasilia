@@ -2,7 +2,7 @@
 <h3>Cadastro</h3>
 <form [formGroup]="form" role="form" (ngSubmit)="onSubmit()" novalidate>
     <div class="row"> 
-        <div class="form-group col-xs-5 col-sm-5 col-md-5" [class.has-error]="name.invalid && name.touched">
+        <div class="form-group col-xs-6 col-sm-6 col-md-6" [class.has-error]="name.invalid && name.touched">
             <label for="name" class="control-label">Nome</label>
             <input [formControl]="name" required type="text" class=" input-line" id="name" name="name">
             <div class="help-block">
@@ -12,7 +12,7 @@
                 </ul>
             </div>
         </div>
-        <div class="form-group col-xs-5 col-sm-5 col-md-5" [class.has-error]="email.invalid && email.touched">
+        <div class="form-group col-xs-6 col-sm-6 col-md-6" [class.has-error]="email.invalid && email.touched">
             <label for="email" class="control-label">E-mail</label>
             <input [formControl]="email" required type="email" class=" input-line" id="email" name="email">
             <div class="help-block">
@@ -23,20 +23,9 @@
                 </ul>
             </div>
         </div>
-        <div class="form-group col-xs-2 col-sm-2 col-md-2" [class.has-error]="email.invalid && email.touched">
-            <label for="email" class="control-label">E-mail</label>
-            
-            <div class="help-block">
-                <ul class="list-unstyled">
-                    <li *ngIf="email.valid || email.pristine">Entre seu endereço de e-mail</li>
-                    <li *ngIf="email.dirty && email.hasError('required')">Um e-mail precisa ser preenchido</li>
-                    <li *ngIf="email.dirty && email.hasError('email')">Por favor, preencha um e-mail válido</li>
-                </ul>
-            </div>
-        </div>
     </div>
     <div class="row"> 
-        <div class="form-group col-xs-4 col-sm-4 col-md-4" [class.has-error]="cpf.invalid && cpf.touched">
+        <div class="form-group col-xs-3 col-sm-3 col-md-3" [class.has-error]="cpf.invalid && cpf.touched">
             <label for="cpf" class="control-label">CPF</label>
             <input [formControl]="cpf" required type="text" class=" input-line" id="cpf" name="cpf" mask="999.999.999-99">
             <div class="help-block">
@@ -46,7 +35,7 @@
                 </ul>
             </div>
         </div>
-        <div class="form-group col-xs-4 col-sm-4 col-md-4" [class.has-error]="rg.invalid && rg.touched">
+        <div class="form-group col-xs-3 col-sm-3 col-md-3" [class.has-error]="rg.invalid && rg.touched">
             <label for="rg" class="control-label">RG</label>
             <input [formControl]="rg" required type="text" class=" input-line" id="rg" name="rg">
             <div class="help-block">
@@ -56,7 +45,7 @@
                 </ul>
             </div>
         </div>
-        <div class="form-group col-xs-4 col-sm-4 col-md-4" [class.has-error]="telefone.invalid && telefone.touched">
+        <div class="form-group col-xs-6 col-sm-6 col-md-6" [class.has-error]="telefone.invalid && telefone.touched">
             <label for="telefone" class="control-label">Telefone Celular</label>
             <input [formControl]="telefone" required type="text" class=" input-line" id="telefone" name="telefone" mask="(99)99999-9999">
             <div class="help-block">
@@ -68,7 +57,30 @@
             </div>
         </div>
     </div>
-    <div class="row" *ngIf="!(isLoggedIn|async)"> 
+    <div class="row"> 
+        <div class="form-group col-xs-6 col-sm-6 col-md-6" [class.has-error]="profissao.invalid && profissao.touched">
+            <label for="profissao" class="control-label">Profissão</label>
+            <input [formControl]="profissao" required type="text" class=" input-line" id="profissao" name="profissao">
+            <div class="help-block">
+                <ul class="list-unstyled">
+                    <li *ngIf="profissao.valid || profissao.pristine">Preencha a sua Profissão</li>
+                    <li *ngIf="profissao.dirty && profissao.hasError('required')">Uma profissão precisa ser preenchida</li>
+                </ul>
+            </div>
+        </div>
+        <div class="form-group col-xs-6 col-sm-6 col-md-6" [class.has-error]="formacao.invalid && formacao.touched">
+            <label for="formacao" class="control-label">Formação</label>
+            <input [formControl]="formacao" required type="text" class=" input-line" id="formacao" name="formacao">
+            <div class="help-block">
+                <ul class="list-unstyled">
+                    <li *ngIf="formacao.valid || formacao.pristine">Preencha a sua formação</li>
+                    <li *ngIf="formacao.dirty && formacao.hasError('required')">Uma formação precisa ser preenchida</li>
+                    
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="row"> 
         <div class="form-group col-xs-6 col-sm-6 col-md-6" [class.has-error]="password.invalid && password.touched">
             <label for="password">Senha</label>
             <input [formControl]="password" type="password" required class=" input-line" id="password" name="password">

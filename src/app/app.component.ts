@@ -28,7 +28,7 @@ export class AppComponent {
     }
 
     onResetPasswordSuccess() {
-        this.alertType = "success";
+        this.alertType = "Sucesso";
         this.alertMessage = "Reset Password Sent!";
     }
 

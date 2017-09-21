@@ -1,3 +1,4 @@
+import {Cadastro} from "./Cadastro"
 export class UserInfo {
     isAnonymous: boolean;
     email: string;
@@ -5,5 +6,6 @@ export class UserInfo {
     photoURL?: string;
     providerId: string;
     uid: string;
-    data:object;
+    data: Cadastro;
+    
 }

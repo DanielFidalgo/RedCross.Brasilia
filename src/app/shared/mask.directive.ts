@@ -67,6 +67,41 @@ export class MaskDirective implements ControlValueAccessor {
     }
 
     $event.target.value = valor;
+    
+  }
+
+   @HostListener('change', ['$event']) 
+  onchange($event: any) {
+    var valor = $event.target.value.replace(/\D/g, '');
+    var pad = this.mask.replace(/\D/g, '').replace(/9/g, '_');
+    var valorMask = valor + pad.substring(0, pad.length - valor.length);
+
+    // retorna caso pressionado backspace
+    if ($event.keyCode === 8) {
+      this.onChange(valor);
+      return;
+    }
+
+    if (valor.length <= pad.length) {
+      this.onChange(valor);
+    }
+
+    var valorMaskPos = 0;
+    valor = '';
+    for (var i = 0; i < this.mask.length; i++) {
+      if (isNaN(parseInt(this.mask.charAt(i)))) {
+        valor += this.mask.charAt(i);
+      } else {
+        valor += valorMask[valorMaskPos++];
+      }
+    }
+    
+    if (valor.indexOf('_') > -1) {
+      valor = valor.substr(0, valor.indexOf('_'));
+    }
+
+    $event.target.value = valor;
+    
   }
 
   @HostListener('blur', ['$event']) 

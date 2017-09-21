@@ -3,6 +3,8 @@ import {AuthService} from "app/shared/auth.service";
 import {DatabaseService} from "app/shared/database.service";
 import { Observable, BehaviorSubject } from "rxjs";
 import {FormGroup, AbstractControl, FormBuilder, Validators} from "@angular/forms";
+import {UserInfo} from "app/shared/user-info"
+import {Cadastro} from "app/shared/cadastro"
 
 @Component({
     selector: 'app-register-user',
@@ -15,6 +17,8 @@ export class RegisterUserComponent {
     name: AbstractControl;
     cpf: AbstractControl;
     rg: AbstractControl;
+    profissao: AbstractControl;
+    formacao: AbstractControl;
     telefone: AbstractControl;
     password: AbstractControl;
     password2: AbstractControl;
@@ -35,6 +39,8 @@ export class RegisterUserComponent {
             )],
             'cpf': ['', Validators.required],
             'rg': ['', Validators.required],
+            'profissao': ['', Validators.required],
+            'formacao': ['', Validators.required],
             'telefone': ['', Validators.required],
             'password': ['', Validators.required],
             'password2': ['', Validators.required]
@@ -45,11 +51,17 @@ export class RegisterUserComponent {
         this.password2 = this.form.controls['password2'];
         this.cpf = this.form.controls['cpf'];
         this.rg = this.form.controls['rg'];
+        this.profissao = this.form.controls['profissao'];
+        this.formacao = this.form.controls['formacao'];
         this.telefone = this.form.controls['telefone'];
         if(this.isLoggedIn.value){
             this.authService.currentUser().subscribe((userInfo)=>{
                             this.name.setValue(userInfo.displayName);
                             this.email.setValue(userInfo.email);
+                            this.cpf.setValue(userInfo.data.cpf);
+                            this.telefone.setValue(userInfo.data.celular);
+                            this.profissao.setValue(userInfo.data.profissao);
+                            this.formacao.setValue(userInfo.data.formacao);
                             this.email.disable;
                         },err=>{});
         }
@@ -91,14 +103,21 @@ export class RegisterUserComponent {
         this.authService
         .currentUser()
         .subscribe((userInfo)=>{
-                    let data = {
-                        nome: this.name.value,
-                        email: this.email.value,
-                        cpf: this.cpf.value,
-                        rg: this.rg.value,
-                    }   
-                    userInfo.data = data;              
-                    this.databaseService.newRegistry(userInfo); 
+                    let cadastro: Cadastro = new Cadastro(); 
+                        cadastro.nome= this.name.value,
+                        cadastro.email= this.email.value,
+                        cadastro.cpf= this.cpf.value,
+                        cadastro.rg= this.rg.value,
+                        cadastro.celular= this.telefone.value
+                        cadastro.profissao= this.profissao.value
+                        cadastro.formacao= this.formacao.value
+                      
+                    let inputUser: UserInfo = new UserInfo();
+                    inputUser.data = cadastro;
+                    inputUser.displayName = userInfo.displayName;
+                    inputUser.email = userInfo.email;
+                    inputUser.uid = userInfo.uid;           
+                    this.databaseService.newRegistry(inputUser); 
         },err=>{});
         
     }
