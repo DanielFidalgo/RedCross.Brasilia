@@ -7,21 +7,46 @@ import {Cadastro} from "./cadastro";
 import {AuthService} from "./auth.service";
 import { Observable, Subject, BehaviorSubject } from "rxjs";
 
+
 @Injectable()
 export class DatabaseService {
-     user : Observable<UserInfo>;
+    static UNKNOWN_USER = {
+        isAnonymous: true,
+        email: null,
+        displayName: null,
+        providerId: null,
+        uid: null,
+        data: null
+    };
+
+    
+     
     constructor(private authService: AuthService, private agularFireDatabase: AngularFireDatabase) {
         this.authService.currentUser();
        
     }
 
 
-    newRegistry(userInfo: UserInfo){
-        if(userInfo.uid!=null){
+    newRegistry(cadastro: Cadastro){
+        this.authService.currentUser().subscribe((userInfo)=>{
+            if(userInfo.uid!=null){
             //var usuario  = {nome: userInfo.data.nome.toUpperCase(), email: userInfo.data.email, cpf: userInfo.data.cpf, rg: userInfo.data.rg, celular: userInfo.data.celular, admin: false };
             let ref = this.agularFireDatabase.object("users/"+userInfo.uid);
-            ref.set(userInfo.data);
+            ref.set(cadastro).then(()=>{
+                console.log("SUCESSO");
+            },(error)=>{
+                console.log("ERRO");
+            });
         }
+           }
+       );
+        
+    }
+
+    objectBy<T>(entidade: string, uid: string):Observable<T>{
+        let retorno = new Subject<T>();
+        this.agularFireDatabase.object(entidade+"/"+uid).subscribe(data=>{console.log(data); retorno.next(data)});
+        return retorno;
     }
 
 

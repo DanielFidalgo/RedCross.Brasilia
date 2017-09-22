@@ -54,35 +54,55 @@ export class RegisterUserComponent {
         this.profissao = this.form.controls['profissao'];
         this.formacao = this.form.controls['formacao'];
         this.telefone = this.form.controls['telefone'];
+        console.log(this.isLoggedIn.value);
         if(this.isLoggedIn.value){
             this.authService.currentUser().subscribe((userInfo)=>{
-                            this.name.setValue(userInfo.displayName);
-                            this.email.setValue(userInfo.email);
-                            this.cpf.setValue(userInfo.data.cpf);
-                            this.telefone.setValue(userInfo.data.celular);
-                            this.profissao.setValue(userInfo.data.profissao);
-                            this.formacao.setValue(userInfo.data.formacao);
-                            this.email.disable;
+                            databaseService.objectBy<Cadastro>('users',userInfo.uid).subscribe((value)=>{
+                                console.log(value)
+                                this.name.setValue(value.nome);
+                                this.email.setValue(value.email);
+                                this.cpf.setValue(value.cpf);
+                                this.telefone.setValue(value.celular);
+                                this.profissao.setValue(value.profissao);
+                                this.formacao.setValue(value.formacao);
+                                this.email.disable;
+                            });
+                            
                         },err=>{});
         }
         
     }
 
     onSubmit() {
+        console.log(this.form);
         if (this.form.valid) {
+            console.log("FORM VALIDO");
             if(!this.isLoggedIn.value){
+                console.log("NAO LOGADO");
             this.authService.createUser(this.email.value, this.password.value, this.name.value)
                 .subscribe(
                     () => {
-                        this.saveUserdb();
                         this.onSuccess.emit("success");
-                        this.form.reset();
+                        let cadastro: Cadastro = new Cadastro(); 
+                        cadastro.nome= this.name.value;
+                        cadastro.email= this.email.value;
+                        cadastro.cpf= this.cpf.value;
+                        cadastro.rg= this.rg.value;
+                        cadastro.celular= this.telefone.value;
+                        cadastro.profissao= this.profissao.value;
+                        cadastro.formacao= this.formacao.value;
+                    console.log(cadastro);
+                    this.databaseService.newRegistry(cadastro); 
+                        
                     },
                     err => this.onError.emit(err)
-                );
-            }else{
-                this.saveUserdb();
+                ).add(()=>{
+                    
+                    this.form.reset();
+                });
+                
             }
+            ;
         }
     }
 
@@ -99,26 +119,4 @@ export class RegisterUserComponent {
         }
     }
 
-    saveUserdb(){
-        this.authService
-        .currentUser()
-        .subscribe((userInfo)=>{
-                    let cadastro: Cadastro = new Cadastro(); 
-                        cadastro.nome= this.name.value,
-                        cadastro.email= this.email.value,
-                        cadastro.cpf= this.cpf.value,
-                        cadastro.rg= this.rg.value,
-                        cadastro.celular= this.telefone.value
-                        cadastro.profissao= this.profissao.value
-                        cadastro.formacao= this.formacao.value
-                      
-                    let inputUser: UserInfo = new UserInfo();
-                    inputUser.data = cadastro;
-                    inputUser.displayName = userInfo.displayName;
-                    inputUser.email = userInfo.email;
-                    inputUser.uid = userInfo.uid;           
-                    this.databaseService.newRegistry(inputUser); 
-        },err=>{});
-        
-    }
 }

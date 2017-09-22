@@ -4,6 +4,7 @@ import { AngularFireModule} from 'angularfire2';
 import { AngularFireAuthModule, AngularFireAuth } from 'angularfire2/auth';
 import { AngularFireDatabase } from 'angularfire2/database';
 import {UserInfo} from "./user-info";
+import {Cadastro} from "./cadastro";
 import { Observable, Subject, BehaviorSubject } from "rxjs";
 
 @Injectable()
@@ -19,7 +20,7 @@ export class AuthService {
 
     userInfo = new BehaviorSubject<UserInfo>(AuthService.UNKNOWN_USER);
     private user: firebase.User;
-    private userData: object;
+    private userData: Cadastro;
 
     constructor(private angularFireAuth: AngularFireAuth, private agularFireDatabase: AngularFireDatabase) {
         this.angularFireAuth.authState.subscribe(user => {
@@ -34,9 +35,7 @@ export class AuthService {
                 userInfo.providerId = user.providerId;
                 userInfo.photoURL = user.photoURL;
                 userInfo.uid = user.uid;
-                this.agularFireDatabase.object("users/"+user.uid).subscribe(data=>{
-                    userInfo.data = data;
-                });
+                
             } else {
                 this.user = null;
                 userInfo.isAnonymous = true;
@@ -101,7 +100,7 @@ export class AuthService {
         this.user.updateEmail(email)
             .then(() => result.next("success"))
             .catch(err => result.error(err));
-        return result.asObservable();
+        return result.asObservable(); 
     }
 
     updatePassword(password: string): Observable<string> {

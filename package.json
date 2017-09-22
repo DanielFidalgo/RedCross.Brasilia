@@ -42,7 +42,7 @@
     "@angular/platform-browser-dynamic": "^4.4.1",
     "@angular/router": "^4.4.1",
     "@types/jasmine": "^2.6.0",
-    "@types/node": "^6.0.71",
+    "@types/node": "^8.0.29",
     "angularfire2": "^4.0.0-rc.2",
     "bootstrap": "^3.3.7",
     "codelyzer": "2.0.0",
