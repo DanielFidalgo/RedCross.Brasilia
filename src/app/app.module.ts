@@ -22,6 +22,7 @@ import {LoginPageComponent} from "./pages/login-page.component";
 import { LoggedInGuard } from "app/shared/logged-in-guard";
 import { DashboardPageComponent } from './pages/dashboard-page.component';
 import {MaskDirective  } from "app/shared/mask.directive";
+import {ToggleButtonModule} from 'primeng/primeng'; 
 
 
 const routes: Routes = [
@@ -45,6 +46,7 @@ const routes: Routes = [
         AllInOnePageComponent,
         LoginPageComponent,
         DashboardPageComponent,
+        
         MaskDirective
     ],
     imports: [
@@ -56,6 +58,7 @@ const routes: Routes = [
         AngularFireModule.initializeApp(firebaseConfig, "cruzvermelhadf"),
         AngularFireDatabaseModule,
         AngularFireAuthModule,
+        ToggleButtonModule,        
         RouterModule.forRoot(routes)
     ],
     providers: [AuthService,DatabaseService, LoggedInGuard],

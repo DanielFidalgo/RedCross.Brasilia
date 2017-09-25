@@ -9,6 +9,15 @@
   <link rel="icon" type="image/x-icon" href="favicon.ico">
 </head>
 <body>
-  <app-root>Loading...</app-root>
+  <app-root>
+    <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
+    <md-progress-spinner
+        class="example-margin"
+        [color]="warn"
+        [mode]="indeterminate"
+        >
+    </md-progress-spinner>
+<span class="sr-only">Loading...</span>
+</app-root>
 </body>
 </html>

@@ -2,33 +2,89 @@
 <h3>Cadastro</h3>
 <form [formGroup]="form" role="form" (ngSubmit)="onSubmit()" novalidate>
     <div class="row"> 
+        <div class="form-group col-xs-6 col-sm-6 col-md-6" >
+            <label class="control-label">Eu sou maior de 18 anos: <br/></label>
+            <p-toggleButton  [formControl]="maior" onLabel="SIM" offLabel="NÃO" onIcon="fa-check-square" offIcon="fa-square" ></p-toggleButton>
+        </div>
+    </div>
+    <div class="row" > 
         <div class="form-group col-xs-6 col-sm-6 col-md-6" [class.has-error]="name.invalid && name.touched">
-            <label for="name" class="control-label">Nome</label>
+            <label for="name" class="control-label">Nome </label>
             <input [formControl]="name" required type="text" class=" input-line" id="name" name="name">
             <div class="help-block">
                 <ul class="list-unstyled">
-                    <li *ngIf="name.valid || name.pristine">Preencha o seu nome</li>
+                    <li *ngIf="name.valid || name.pristine"> &nbsp;</li>
                     <li *ngIf="name.dirty && name.hasError('required')">Um nome precisa ser preenchido</li>
                 </ul>
             </div>
         </div>
-        <div class="form-group col-xs-3 col-sm-3 col-md-3" [class.has-error]="cpf.invalid && cpf.touched">
+        <div *ngIf="!semCPF || !semRG" class="form-group col-xs-3 col-sm-3 col-md-3" [class.has-error]="cpf.invalid && cpf.touched">
             <label for="cpf" class="control-label">CPF</label>
-            <input [formControl]="cpf" required type="text" class=" input-line" id="cpf" name="cpf" mask="999.999.999-99">
+            <input [formControl]="cpf" [required]="!semCPF" type="text" class=" input-line" id="cpf" name="cpf" mask="999.999.999-99">
             <div class="help-block">
+                 <div *ngIf="!maior.value">
+                 <input  type="checkbox" class="pull-right" name="semCPF" [(ngModel)]="semCPF" [ngModelOptions]="{standalone: true}">
+                 <span class="pull-right">Não possuo CPF: </span>
+                 </div>
                 <ul class="list-unstyled">
-                    <li *ngIf="cpf.valid || cpf.pristine">Preencha o seu CPF</li>
+                    <li *ngIf="cpf.valid || cpf.pristine">&nbsp; </li>
                     <li *ngIf="cpf.dirty && cpf.hasError('required')">Um CPF precisa ser preenchido</li>
                 </ul>
             </div>
         </div>
-        <div class="form-group col-xs-3 col-sm-3 col-md-3" [class.has-error]="rg.invalid && rg.touched">
+        <div  *ngIf="!semCPF || !semRG" class="form-group col-xs-3 col-sm-3 col-md-3" [class.has-error]="rg.invalid && rg.touched">
             <label for="rg" class="control-label">RG</label>
-            <input [formControl]="rg" required type="text" class=" input-line" id="rg" name="rg">
+            <input [formControl]="rg" [required]="!semRG"  type="text" class=" input-line" id="rg" name="rg" >
+            <div class="help-block">
+                <div *ngIf="!maior.value">
+                 <input  type="checkbox" class="pull-right" name="semRG" [(ngModel)]="semRG" [ngModelOptions]="{standalone: true}" >
+                 <span class="pull-right">Não possuo RG: </span>
+                 </div>
+                <ul class="list-unstyled">
+                    <li *ngIf="rg.valid || rg.pristine">&nbsp; </li>
+                    <li *ngIf="rg.dirty && rg.hasError('required')">Um RG precisa ser preenchido</li>
+                </ul>
+            </div>
+        </div>
+        <div  *ngIf="semCPF && semRG" class="form-group col-xs-6 col-sm-6 col-md-6" [class.has-error]="rg.invalid && rg.touched">
+            <label for="rg" class="control-label">Certidão de Nascimento</label>
+            <input [formControl]="certidao" [required]="semCPF && semRG" type="text" class=" input-line" id="certidao" name="certidao" >
             <div class="help-block">
                 <ul class="list-unstyled">
-                    <li *ngIf="rg.valid || rg.pristine">Preencha o seu RG</li>
+                    <li *ngIf="rg.valid || rg.pristine">&nbsp; </li>
                     <li *ngIf="rg.dirty && rg.hasError('required')">Um RG precisa ser preenchido</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="row" *ngIf="!maior.value"> 
+        <div class="form-group col-xs-6 col-sm-6 col-md-6" [class.has-error]="nameResponsavel.invalid && nameResponsavel.touched">
+            <label for="nameResponsavel" class="control-label">Nome do responsavel</label>
+            <input [formControl]="nameResponsavel"  [required]='!maior.value' type="text" class=" input-line" id="nameResponsavel" name="nameResponsavel">
+            <div class="help-block">
+                <ul class="list-unstyled">
+                    <li *ngIf="nameResponsavel.valid || nameResponsavel.pristine">&nbsp; </li>
+                    <li *ngIf="nameResponsavel.dirty && nameResponsavel.hasError('required')">O nome do responsavel precisa ser preenchido</li>
+                </ul>
+            </div>
+        </div>
+        <div class="form-group col-xs-3 col-sm-3 col-md-3" [class.has-error]="cpfResponsavel.invalid && cpfResponsavel.touched">
+            <label for="cpfResponsavel" class="control-label">CPF do responsavel</label>
+            <input [formControl]="cpfResponsavel" [required]='!maior.value' type="text" class=" input-line" id="cpfResponsavel" name="cpfResponsavel" mask="999.999.999-99">
+            <div class="help-block">
+                <ul class="list-unstyled">
+                    <li *ngIf="cpfResponsavel.valid || cpfResponsavel.pristine"> &nbsp;</li>
+                    <li *ngIf="cpfResponsavel.dirty && cpfResponsavel.hasError('required')">O CPF do responsavel precisa ser preenchido</li>
+                </ul>
+            </div>
+        </div>
+        <div class="form-group col-xs-3 col-sm-3 col-md-3" [class.has-error]="rg.invalid && rg.touched">
+            <label for="rgResponsavel" class="control-label">RG do responsavel</label>
+            <input [formControl]="rgResponsavel" [required]='!maior.value' type="text" class=" input-line" id="rgResponsavel" name="rgResponsavel">
+            <div class="help-block">
+                <ul class="list-unstyled">
+                    <li *ngIf="rgResponsavel.valid || rgResponsavel.pristine">&nbsp; </li>
+                    <li *ngIf="rgResponsavel.dirty && rgResponsavel.hasError('required')">O RG do responsavel precisa ser preenchido</li>
                 </ul>
             </div>
         </div>
@@ -39,7 +95,7 @@
             <input [formControl]="email" required type="email" class=" input-line" id="email" name="email">
             <div class="help-block">
                 <ul class="list-unstyled">
-                    <li *ngIf="email.valid || email.pristine">Entre seu endereço de e-mail</li>
+                    <li *ngIf="email.valid || email.pristine">&nbsp; </li>
                     <li *ngIf="email.dirty && email.hasError('required')">Um e-mail precisa ser preenchido</li>
                     <li *ngIf="email.dirty && email.hasError('email')">Por favor, preencha um e-mail válido</li>
                 </ul>
@@ -50,7 +106,7 @@
             <input [formControl]="telefone" required type="text" class=" input-line" id="telefone" name="telefone" mask="(99)99999-9999">
             <div class="help-block">
                 <ul class="list-unstyled">
-                    <li *ngIf="telefone.valid || telefone.pristine">Preencha o seu telefone</li>
+                    <li *ngIf="telefone.valid || telefone.pristine">&nbsp; </li>
                     <li *ngIf="telefone.dirty && telefone.hasError('required')">Um telefone precisa ser preenchido</li>
                     
                 </ul>
@@ -63,7 +119,7 @@
             <input [formControl]="profissao" required type="text" class=" input-line" id="profissao" name="profissao">
             <div class="help-block">
                 <ul class="list-unstyled">
-                    <li *ngIf="profissao.valid || profissao.pristine">Preencha a sua Profissão</li>
+                    <li *ngIf="profissao.valid || profissao.pristine">&nbsp; </li>
                     <li *ngIf="profissao.dirty && profissao.hasError('required')">Uma profissão precisa ser preenchida</li>
                 </ul>
             </div>
@@ -73,20 +129,20 @@
             <input [formControl]="formacao" required type="text" class=" input-line" id="formacao" name="formacao">
             <div class="help-block">
                 <ul class="list-unstyled">
-                    <li *ngIf="formacao.valid || formacao.pristine">Preencha a sua formação</li>
+                    <li *ngIf="formacao.valid || formacao.pristine"> &nbsp;</li>
                     <li *ngIf="formacao.dirty && formacao.hasError('required')">Uma formação precisa ser preenchida</li>
                     
                 </ul>
             </div>
         </div>
     </div>
-    <div class="row"> 
+    <div *ngIf="!(isLoggedIn|async)" class="row"> 
         <div class="form-group col-xs-6 col-sm-6 col-md-6" [class.has-error]="password.invalid && password.touched">
             <label for="password">Senha</label>
             <input [formControl]="password" type="password" required class=" input-line" id="password" name="password">
             <div class="help-block">
                 <ul class="list-unstyled">
-                    <li *ngIf="password.dirty && password.valid || password.pristine">Entre sua senha</li>
+                    <li *ngIf="password.dirty && password.valid || password.pristine">&nbsp; </li>
                     <li *ngIf="password.dirty && password.hasError('required')">Uma senha precisa ser preenchida</li>
                 </ul>
             </div>

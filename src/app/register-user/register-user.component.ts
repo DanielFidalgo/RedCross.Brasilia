@@ -6,6 +6,7 @@ import {FormGroup, AbstractControl, FormBuilder, Validators} from "@angular/form
 import {UserInfo} from "app/shared/user-info"
 import {Cadastro} from "app/shared/cadastro"
 
+
 @Component({
     selector: 'app-register-user',
     templateUrl: './register-user.component.html',
@@ -23,7 +24,11 @@ export class RegisterUserComponent {
     password: AbstractControl;
     password2: AbstractControl;
     isLoggedIn = new BehaviorSubject<boolean>(false);
-
+    maior:AbstractControl;
+    nameResponsavel: AbstractControl;
+    cpfResponsavel: AbstractControl;
+    rgResponsavel: AbstractControl;
+    certidao: AbstractControl;
     @Output() onSuccess = new EventEmitter();
     @Output() onError = new EventEmitter();
 
@@ -31,6 +36,7 @@ export class RegisterUserComponent {
                 private databaseService: DatabaseService,
                 private fb: FormBuilder) {
         this.authService.isLoggedIn().subscribe(this.isLoggedIn);
+        
         this.form = fb.group({
             'name': ['', Validators.required],
             'email': ['', Validators.compose([
@@ -43,7 +49,12 @@ export class RegisterUserComponent {
             'formacao': ['', Validators.required],
             'telefone': ['', Validators.required],
             'password': ['', Validators.required],
-            'password2': ['', Validators.required]
+            'password2': ['', Validators.required],
+            'maior': ['', ''],
+            'nameResponsavel': ['', ''],
+            'cpfResponsavel': ['', ''],
+            'rgResponsavel': ['', ''],
+            'certidao': ['', '']
         }, {validator: this.matchingPasswords('password', 'password2')});
         this.name = this.form.controls['name'];
         this.email = this.form.controls['email'];
@@ -54,23 +65,34 @@ export class RegisterUserComponent {
         this.profissao = this.form.controls['profissao'];
         this.formacao = this.form.controls['formacao'];
         this.telefone = this.form.controls['telefone'];
-        console.log(this.isLoggedIn.value);
-        if(this.isLoggedIn.value){
-            this.authService.currentUser().subscribe((userInfo)=>{
-                            databaseService.objectBy<Cadastro>('users',userInfo.uid).subscribe((value)=>{
-                                console.log(value)
-                                this.name.setValue(value.nome);
-                                this.email.setValue(value.email);
-                                this.cpf.setValue(value.cpf);
-                                this.telefone.setValue(value.celular);
-                                this.profissao.setValue(value.profissao);
-                                this.formacao.setValue(value.formacao);
-                                this.email.disable;
-                            });
-                            
-                        },err=>{});
-        }
-        
+        this.maior = this.form.controls['maior'];
+        this.maior.setValue("true");
+        this.nameResponsavel = this.form.controls['nameResponsavel'];
+        this.cpfResponsavel = this.form.controls['cpfResponsavel'];
+        this.rgResponsavel = this.form.controls['rgResponsavel'];
+        this.certidao = this.form.controls['certidao'];
+        this.authService.currentCadastro().subscribe((cadastro)=>{
+            if(cadastro.nome != null && cadastro.email != null){
+                this.name.setValue(cadastro.nome);
+                this.email.setValue(cadastro.email);
+                this.cpf.setValue(cadastro.cpf);
+                this.rg.setValue(cadastro.rg);
+                this.profissao.setValue(cadastro.profissao);
+                this.formacao.setValue(cadastro.formacao);
+                this.telefone.setValue(cadastro.celular);
+                this.password.disable();
+                this.password2.disable();
+            }else{
+                this.authService.currentUser().subscribe((user)=>{
+                    this.name.setValue(user.displayName);
+                    this.email.setValue(user.email);
+                    
+                    this.password.disable();
+                    this.password2.disable();
+                });
+            }
+                
+            }) 
     }
 
     onSubmit() {
@@ -83,16 +105,7 @@ export class RegisterUserComponent {
                 .subscribe(
                     () => {
                         this.onSuccess.emit("success");
-                        let cadastro: Cadastro = new Cadastro(); 
-                        cadastro.nome= this.name.value;
-                        cadastro.email= this.email.value;
-                        cadastro.cpf= this.cpf.value;
-                        cadastro.rg= this.rg.value;
-                        cadastro.celular= this.telefone.value;
-                        cadastro.profissao= this.profissao.value;
-                        cadastro.formacao= this.formacao.value;
-                    console.log(cadastro);
-                    this.databaseService.newRegistry(cadastro); 
+                        this.save();
                         
                     },
                     err => this.onError.emit(err)
@@ -101,8 +114,11 @@ export class RegisterUserComponent {
                     this.form.reset();
                 });
                 
+            }else{
+                
+                       this.save();
             }
-            ;
+            
         }
     }
 
@@ -117,6 +133,22 @@ export class RegisterUserComponent {
                 };
             }
         }
+    }
+    save(){
+        let cadastro: Cadastro = new Cadastro(); 
+                        cadastro.nome= this.name.value;
+                        cadastro.email= this.email.value;
+                        cadastro.cpf= this.cpf.value;
+                        cadastro.rg= this.rg.value;
+                        cadastro.celular= this.telefone.value;
+                        cadastro.profissao= this.profissao.value;
+                        cadastro.formacao= this.formacao.value;
+                    console.log(cadastro);
+                    this.databaseService.newRegistry(cadastro); 
+    }
+
+    disableField(event){
+        console.log(event);
     }
 
 }

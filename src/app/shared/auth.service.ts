@@ -18,15 +18,18 @@ export class AuthService {
         data: null
     };
 
+
     userInfo = new BehaviorSubject<UserInfo>(AuthService.UNKNOWN_USER);
     private user: firebase.User;
-    private userData: Cadastro;
+    
+    cadastro = new BehaviorSubject<Cadastro>(new Cadastro());
 
     constructor(private angularFireAuth: AngularFireAuth, private agularFireDatabase: AngularFireDatabase) {
         this.angularFireAuth.authState.subscribe(user => {
             // console.log("user: ", JSON.stringify(user));
             this.user = user;
             let userInfo = new UserInfo();
+            
             if (user != null) {
 
                 userInfo.isAnonymous = user.isAnonymous;
@@ -35,11 +38,14 @@ export class AuthService {
                 userInfo.providerId = user.providerId;
                 userInfo.photoURL = user.photoURL;
                 userInfo.uid = user.uid;
-                
+                this.agularFireDatabase.object("users/"+user.uid).subscribe((data)=>{
+                    this.cadastro.next(data);
+                });
             } else {
                 this.user = null;
                 userInfo.isAnonymous = true;
             }
+            
             this.userInfo.next(userInfo);
         });
     }
@@ -54,6 +60,10 @@ export class AuthService {
 
     currentUser(): Observable<UserInfo> {
         return this.userInfo.asObservable();
+    }
+
+    currentCadastro(): Observable<Cadastro> {
+        return this.cadastro.asObservable();
     }
 
     logout(): Observable<string> {
@@ -76,6 +86,7 @@ export class AuthService {
             .catch(err => result.error(err));
         return result;
     }
+
 
     createUser(email: string, password: string, displayName: string): Observable<string> {
         let result = new Subject<string>();
