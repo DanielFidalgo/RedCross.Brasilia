@@ -21,11 +21,18 @@ import {AllInOnePageComponent} from "./pages/all-in-one-page.component";
 import {LoginPageComponent} from "./pages/login-page.component";
 import { LoggedInGuard } from "app/shared/logged-in-guard";
 import { DashboardPageComponent } from './pages/dashboard-page.component';
-import {MaskDirective  } from "app/shared/mask.directive";
 import {ToggleButtonModule} from 'primeng/primeng'; 
+import {InputMaskModule} from 'primeng/primeng';
+import {MenubarModule,MenuItem} from 'primeng/primeng';
+import { SimpleNotificationsModule } from 'angular2-notifications';
+import { NotificationService } from "app/shared/notification.service";
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { NewPasswordComponent } from './pages/new-password/new-password.component';
+
 
 
 const routes: Routes = [
+    { path: 'new-password', component: NewPasswordComponent },
     { path: 'register', component: RegisterPageComponent },
     { path: 'all-in-one', component: AllInOnePageComponent },
     { path: 'reset-password', component: ResetPasswordComponent },
@@ -46,8 +53,9 @@ const routes: Routes = [
         AllInOnePageComponent,
         LoginPageComponent,
         DashboardPageComponent,
+        NewPasswordComponent,
         
-        MaskDirective
+
     ],
     imports: [
         BrowserModule,
@@ -58,12 +66,15 @@ const routes: Routes = [
         AngularFireModule.initializeApp(firebaseConfig, "cruzvermelhadf"),
         AngularFireDatabaseModule,
         AngularFireAuthModule,
-        ToggleButtonModule,        
-        RouterModule.forRoot(routes)
+        ToggleButtonModule,    
+        InputMaskModule,    
+        MenubarModule,
+        RouterModule.forRoot(routes),
+        SimpleNotificationsModule.forRoot(),
+        BrowserAnimationsModule
     ],
-    providers: [AuthService,DatabaseService, LoggedInGuard],
-    bootstrap: [AppComponent],
-    exports: [ MaskDirective]
+    providers: [AuthService,DatabaseService, LoggedInGuard, NotificationService ],
+    bootstrap: [AppComponent]
     
 })
 export class AppModule {

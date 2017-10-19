@@ -161,4 +161,7 @@ export class AuthService {
         result.error("Not a supported authentication method: " + provider)
         return result.asObservable();
     }
+    resetPassword(code: string, password: string): firebase.Promise<any>{
+        return this.angularFireAuth.auth.confirmPasswordReset(code,password);
+    }
 }

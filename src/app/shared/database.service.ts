@@ -6,6 +6,8 @@ import {UserInfo} from "./user-info";
 import {Cadastro} from "./cadastro";
 import {AuthService} from "./auth.service";
 import { Observable, Subject, BehaviorSubject } from "rxjs";
+import { NotificationService } from "app/shared/notification.service";
+
 
 
 @Injectable()
@@ -21,7 +23,7 @@ export class DatabaseService {
 
     
      
-    constructor(private authService: AuthService, private agularFireDatabase: AngularFireDatabase) {
+    constructor(private authService: AuthService, private agularFireDatabase: AngularFireDatabase, private notification: NotificationService,) {
         this.authService.currentUser();
        
     }
@@ -33,7 +35,9 @@ export class DatabaseService {
             //var usuario  = {nome: userInfo.data.nome.toUpperCase(), email: userInfo.data.email, cpf: userInfo.data.cpf, rg: userInfo.data.rg, celular: userInfo.data.celular, admin: false };
             let ref = this.agularFireDatabase.object("users/"+userInfo.uid);
             ref.set(cadastro).then(()=>{
+                
                 console.log("SUCESSO");
+                
             },(error)=>{
                 console.log("ERRO");
             });

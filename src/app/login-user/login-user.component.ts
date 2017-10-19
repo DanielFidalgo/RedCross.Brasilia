@@ -40,7 +40,12 @@ export class LoginUserComponent {
     loginVia($event, provider: string) {
         $event.preventDefault();
         this.authService.loginViaProvider(provider).subscribe(
-            () => this.router.navigate(['register']),
+            () =>
+            this.authService.currentCadastro().subscribe((cadastro)=>{
+                if(!cadastro.completo){ 
+                    this.router.navigate(['register'])
+                }
+                }),
             err => this.onError.emit(err)
         );
     }

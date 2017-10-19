@@ -1,4 +1,4 @@
-<div class="row" *ngIf="!(isLoggedIn|async)"><div class=" col-xs-12 col-sm-12 col-md-12 logoLogin"></div></div>
+<div class="row" *ngIf="!(isLoggedIn|async) || !completo "><div class=" col-xs-12 col-sm-12 col-md-12 logoLogin"></div></div>
 <h3>Cadastro</h3>
 <form [formGroup]="form" role="form" (ngSubmit)="onSubmit()" novalidate>
     <div class="row"> 
@@ -18,12 +18,13 @@
                 </ul>
             </div>
         </div>
-        <div *ngIf="!semCPF || !semRG" class="form-group col-xs-3 col-sm-3 col-md-3" [class.has-error]="cpf.invalid && cpf.touched">
+        <div *ngIf="(!semCPF.value || !semRG.value) || maior.value " class="form-group col-xs-3 col-sm-3 col-md-3" [class.has-error]="cpf.invalid && cpf.touched">
             <label for="cpf" class="control-label">CPF</label>
-            <input [formControl]="cpf" [required]="!semCPF" type="text" class=" input-line" id="cpf" name="cpf" mask="999.999.999-99">
+            
+            <p-inputMask [formControl]="cpf" [required]="!semCPF" type="text" styleClass=" input-line" id="cpf" name="cpf" mask="999.999.999-99"></p-inputMask>
             <div class="help-block">
                  <div *ngIf="!maior.value">
-                 <input  type="checkbox" class="pull-right" name="semCPF" [(ngModel)]="semCPF" [ngModelOptions]="{standalone: true}">
+                 <input  type="checkbox" class="pull-right" name="semCPF" [formControl]="semCPF" (change)="onChange($event)">
                  <span class="pull-right">Não possuo CPF: </span>
                  </div>
                 <ul class="list-unstyled">
@@ -32,12 +33,12 @@
                 </ul>
             </div>
         </div>
-        <div  *ngIf="!semCPF || !semRG" class="form-group col-xs-3 col-sm-3 col-md-3" [class.has-error]="rg.invalid && rg.touched">
+        <div  *ngIf="(!semCPF.value || !semRG.value)  || maior.value " class="form-group col-xs-3 col-sm-3 col-md-3" [class.has-error]="rg.invalid && rg.touched">
             <label for="rg" class="control-label">RG</label>
             <input [formControl]="rg" [required]="!semRG"  type="text" class=" input-line" id="rg" name="rg" >
             <div class="help-block">
                 <div *ngIf="!maior.value">
-                 <input  type="checkbox" class="pull-right" name="semRG" [(ngModel)]="semRG" [ngModelOptions]="{standalone: true}" >
+                 <input  type="checkbox" class="pull-right" name="semRG" [formControl]="semRG"  (change)="onChange($event)" >
                  <span class="pull-right">Não possuo RG: </span>
                  </div>
                 <ul class="list-unstyled">
@@ -46,7 +47,7 @@
                 </ul>
             </div>
         </div>
-        <div  *ngIf="semCPF && semRG" class="form-group col-xs-6 col-sm-6 col-md-6" [class.has-error]="rg.invalid && rg.touched">
+        <div  *ngIf="semCPF.value && semRG.value && !maior.value" class="form-group col-xs-6 col-sm-6 col-md-6" [class.has-error]="rg.invalid && rg.touched">
             <label for="rg" class="control-label">Certidão de Nascimento</label>
             <input [formControl]="certidao" [required]="semCPF && semRG" type="text" class=" input-line" id="certidao" name="certidao" >
             <div class="help-block">
@@ -70,7 +71,8 @@
         </div>
         <div class="form-group col-xs-3 col-sm-3 col-md-3" [class.has-error]="cpfResponsavel.invalid && cpfResponsavel.touched">
             <label for="cpfResponsavel" class="control-label">CPF do responsavel</label>
-            <input [formControl]="cpfResponsavel" [required]='!maior.value' type="text" class=" input-line" id="cpfResponsavel" name="cpfResponsavel" mask="999.999.999-99">
+             <p-inputMask [formControl]="cpfResponsavel" [required]="!maior.value" type="text" styleClass=" input-line" id="cpfResponsavel" name="cpfResponsavel" mask="999.999.999-99"></p-inputMask>
+            
             <div class="help-block">
                 <ul class="list-unstyled">
                     <li *ngIf="cpfResponsavel.valid || cpfResponsavel.pristine"> &nbsp;</li>
@@ -80,7 +82,8 @@
         </div>
         <div class="form-group col-xs-3 col-sm-3 col-md-3" [class.has-error]="rg.invalid && rg.touched">
             <label for="rgResponsavel" class="control-label">RG do responsavel</label>
-            <input [formControl]="rgResponsavel" [required]='!maior.value' type="text" class=" input-line" id="rgResponsavel" name="rgResponsavel">
+            
+            <input [formControl]="rgResponsavel" [required]="!maior.value"  type="text" class=" input-line" id="rgResponsavel" name="rgResponsavel" >
             <div class="help-block">
                 <ul class="list-unstyled">
                     <li *ngIf="rgResponsavel.valid || rgResponsavel.pristine">&nbsp; </li>
@@ -103,7 +106,8 @@
         </div>
         <div class="form-group col-xs-6 col-sm-6 col-md-6" [class.has-error]="telefone.invalid && telefone.touched">
             <label for="telefone" class="control-label">Telefone Celular</label>
-            <input [formControl]="telefone" required type="text" class=" input-line" id="telefone" name="telefone" mask="(99)99999-9999">
+            <p-inputMask [formControl]="telefone" required type="text" styleClass=" input-line" id="telefone" name="telefone" mask="(99)99999-9999"></p-inputMask>
+            
             <div class="help-block">
                 <ul class="list-unstyled">
                     <li *ngIf="telefone.valid || telefone.pristine">&nbsp; </li>
@@ -163,5 +167,8 @@
     </div>
     <button type="submit" class="btn btn btn-primary">
         Salvar
+    </button>
+    <button  class="btn btn btn-default" (click)="clear()" >
+        Limpar
     </button>
 </form>

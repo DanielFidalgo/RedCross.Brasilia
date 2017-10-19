@@ -8,4 +8,10 @@ export class Cadastro {
     celular: string;
     formacao: string;
     profissao: string;
+    nomeResponsavel?: string;
+    cpfResponsavel?: string;
+    rgResponsavel?: string;
+    certidao?: string;
+    maior?: boolean;
+    completo?: boolean;
 }
