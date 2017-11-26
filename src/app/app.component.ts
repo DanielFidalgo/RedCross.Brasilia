@@ -4,6 +4,7 @@ import { Observable, BehaviorSubject } from "rxjs";
 import {Router} from "@angular/router";
 import {UserInfo} from "app/shared/user-info";
 import {MenubarModule,MenuItem} from 'primeng/primeng';
+import {Cadastro} from "app/shared/cadastro";
 
 
 @Component({
@@ -21,18 +22,21 @@ export class AppComponent {
     private alertMessage = "";
     private items: MenuItem[];
     isLoggedIn = new BehaviorSubject<boolean>(false);
-    completo: boolean;
+    completo: Observable<UserInfo>;
     user: string;
+    admin: boolean;
     constructor(private authService: AuthService, private router: Router) {
         this.authService.isLoggedIn().subscribe(this.isLoggedIn);
-        this.authService.currentCadastro().subscribe(cadastro =>{
-            this.completo = cadastro.completo;
-            this.user = cadastro.nome;
-        });
+        
+        
     }
 
     currentUser(): Observable<UserInfo> {
         return this.authService.currentUser();
+    }
+
+    currentCadastro(): Observable<Cadastro> {
+        return this.authService.currentCadastro();
     }
 
     logout() {

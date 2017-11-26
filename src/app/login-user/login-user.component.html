@@ -37,7 +37,7 @@
             <input [formControl]="email" required type="text" class="input-line" id="email" name="email">
             <div class="help-block">
                 <ul class="list-unstyled">
-                    <li *ngIf="email.valid || email.pristine">Entre seu endereço de e-mail</li>
+                    <li *ngIf="email.valid || email.pristine"> &nbsp;</li>
                     <li *ngIf="email.dirty && email.hasError('required')">Um endereço de e-mail é necessario</li>
                 </ul>
             </div>
@@ -58,7 +58,7 @@
                 Esqueci minha senha
             </a>
             <ul class="list-unstyled">
-                <li *ngIf="password.valid || password.pristine">Entre uma Senha</li>
+                <li *ngIf="password.valid || password.pristine"> &nbsp;</li>
                 <li *ngIf="password.dirty && password.hasError('required')">Uma senha é necessaria</li>
             </ul>
         </div>

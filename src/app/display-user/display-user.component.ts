@@ -2,6 +2,8 @@ import {Component, OnInit, EventEmitter, Output} from "@angular/core";
 import {AuthService} from "app/shared/auth.service";
 import {UserInfo} from "app/shared/user-info";
 import {Observable} from "rxjs";
+import { Cadastro } from "app/shared/Cadastro";
+import {Router} from "@angular/router";
 
 @Component({
     selector: 'app-display-user',
@@ -12,13 +14,18 @@ export class DisplayUserComponent {
     @Output() onLoggedOut = new EventEmitter();
 
 
-    constructor(private authService: AuthService) {}
+    constructor(private authService: AuthService, private router: Router) {}
 
     currentUser(): Observable<UserInfo> {
         return this.authService.currentUser();
     }
 
+    currentCadastro(): Observable<Cadastro>{
+        return this.authService.currentCadastro();
+    }
+
     logout() {
-        this.authService.logout().subscribe(() => this.onLoggedOut.emit("success"));
+        this.authService.logout();
+        this.router.navigate(['/']);
     }
 }

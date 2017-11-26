@@ -41,12 +41,13 @@ export class LoginUserComponent {
         $event.preventDefault();
         this.authService.loginViaProvider(provider).subscribe(
             () =>
-            this.authService.currentCadastro().subscribe((cadastro)=>{
+            console.log("Logado"),
+            err => this.onError.emit(err),
+            ()=>this.authService.currentCadastro().subscribe((cadastro)=>{
                 if(!cadastro.completo){ 
                     this.router.navigate(['register'])
                 }
-                }),
-            err => this.onError.emit(err)
+                })
         );
     }
 }

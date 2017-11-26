@@ -6,9 +6,18 @@ import { Observable } from "rxjs/Observable";
 
 @Injectable()
 export class LoggedInGuard implements CanActivate {
+    completo: Observable<boolean>;
     constructor(private authService: AuthService) {}
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
-        return this.authService.isLoggedIn();
+        this.authService.currentCadastro().subscribe(cadastro=>{
+            if(cadastro !=null){
+                this.completo = Observable.of(cadastro.completo);
+            }else{
+                this.completo = Observable.of(false);
+            }
+           
+        });
+        return this.authService.isLoggedIn() && this.completo;
     }
 }

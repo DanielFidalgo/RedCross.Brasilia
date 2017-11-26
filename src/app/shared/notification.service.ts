@@ -28,4 +28,9 @@ export class NotificationService {
   {
       return this.nService.error( error.name, error.message, this.options);
   }
+
+  errorMsg(titulo, corpo):Notification
+  {
+      return this.nService.error( titulo, corpo, this.options);
+  }
 }

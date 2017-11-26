@@ -1,4 +1,4 @@
-<nav class="navbar navbar-rc" *ngIf="(isLoggedIn|async) && completo">
+<nav class="navbar navbar-rc" *ngIf="(isLoggedIn|async)">
     <div class="container-fluid ">
         <!-- Brand and toggle get grouped for better mobile display -->
         
@@ -10,9 +10,24 @@
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
                 <li routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"><a [routerLink]="['']">Home</a></li>
+                <li class="dropdown" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+                    <a class="dropdown-toggle" data-toggle="dropdown" >Cursos <b class="caret"></b></a>
+                    <ul  class="dropdown-menu">
+                            <li><a class="" [routerLink]="['listar-cursos']">Listar <i class="fa fa-list pull-right" aria-hidden="true"></i></a></li>
+                            <li *ngIf="admin" ><a [routerLink]="['cadastrar-curso']">Cadastrar <i class="fa fa-file  pull-right" aria-hidden="true"></i></a> </li>
+                        
+                    </ul>
+                </li>
+                <li *ngIf="admin" class="dropdown" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+                        <a class="dropdown-toggle" data-toggle="dropdown" >Departamentos <b class="caret"></b></a>
+                        <ul  class="dropdown-menu">
+                                <li><a class="" [routerLink]="['listar-departamentos']">Listar <i class="fa fa-list pull-right" aria-hidden="true"></i></a></li>
+                                <li ><a [routerLink]="['cadastrar-departamento']">Cadastrar <i class="fa fa-file  pull-right" aria-hidden="true"></i></a> </li>
+                            
+                        </ul>
+                </li>
                 <li routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"><a [routerLink]="['dashboard']" *ngIf="(isLoggedIn|async)">Dashboard</a></li>
-                <li routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"><a
-                        [routerLink]="['all-in-one']" *ngIf="!(isLoggedIn|async)">All In One</a></li>
+                
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li class="dropdown">
@@ -33,9 +48,6 @@
     </div><!-- /.container-fluid -->
 </nav>
 <simple-notifications [options]="options"></simple-notifications>
-
-
-
 <div class="container">
     <router-outlet></router-outlet>
 </div>

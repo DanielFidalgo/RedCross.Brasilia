@@ -6,6 +6,7 @@ export const firebaseConfig = {
     authDomain: "cruzvermelhadf.firebaseapp.com",
     databaseURL: "https://cruzvermelhadf.firebaseio.com/",
     storageBucket: "gs://cruzvermelhadf.appspot.com/",
-    messagingSenderId: "935358902590"
+    messagingSenderId: "935358902590",
+    projectId: "cruzvermelhadf"
 };
 

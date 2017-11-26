@@ -66,12 +66,15 @@ export class RegisterUserComponent {
                 this.authService.createUser(this.email.value, this.password.value, this.name.value)
                 .subscribe(
                     () => {
-                        this.onSuccess.emit("success");
+                        
                         this.save();
                     },
-                    err => this.onError.emit(err)
+                    err => {
+                            
+                            this.notification.errorMsg("Erro!","Não foi possivel realizar o Cadastro.");
+                           }
                 ).add(()=>{
-                    this.form.reset();
+                    this.clear();
                 });
                 
             }else{
@@ -95,7 +98,7 @@ export class RegisterUserComponent {
         }
     }
     save(){
-        let cadastro: Cadastro = new Cadastro(); 
+        let cadastro: any = new Cadastro(); 
         cadastro.nome= this.name.value;
         cadastro.email= this.email.value;
         cadastro.celular= this.telefone.value;
@@ -119,7 +122,7 @@ export class RegisterUserComponent {
         }
         cadastro.completo = true;
         cadastro.admin = this.admin;
-        this.databaseService.newRegistry(cadastro);
+        this.databaseService.newRegistry("users",cadastro);
         this.notification.success("Cadastro","O seu cadastro foi efetuado com sucesso!")
         this.router.navigate(['']);
         
@@ -168,8 +171,9 @@ export class RegisterUserComponent {
         this.semRG.setValue(false);
         this.semCPF.setValue(false);
         this.authService.currentCadastro().subscribe((cadastro)=>{
-            this.completo = cadastro.completo;
-            if(cadastro.nome != null && cadastro.email != null){
+            
+            if(cadastro!=null && cadastro.nome != null && cadastro.email != null){
+                this.completo = cadastro.completo;
                 this.name.setValue(cadastro.nome);
                 this.email.setValue(cadastro.email);
                 this.cpf.setValue(cadastro.cpf);
@@ -198,6 +202,7 @@ export class RegisterUserComponent {
                 this.password.disable();
                 this.password2.disable();
             }else{
+                this.completo = false;
                 this.authService.currentUser().subscribe((user)=>{
                     if(user.displayName != null && user.email != null){
                         this.name.setValue(user.displayName);

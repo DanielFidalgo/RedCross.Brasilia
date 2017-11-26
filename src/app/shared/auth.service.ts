@@ -2,7 +2,7 @@ import {Injectable, Inject} from "@angular/core";
 import * as firebase from 'firebase/app';
 import { AngularFireModule} from 'angularfire2';
 import { AngularFireAuthModule, AngularFireAuth } from 'angularfire2/auth';
-import { AngularFireDatabase } from 'angularfire2/database';
+import { AngularFirestore, AngularFirestoreDocument } from 'angularfire2/firestore';
 import {UserInfo} from "./user-info";
 import {Cadastro} from "./cadastro";
 import { Observable, Subject, BehaviorSubject } from "rxjs";
@@ -22,25 +22,30 @@ export class AuthService {
     userInfo = new BehaviorSubject<UserInfo>(AuthService.UNKNOWN_USER);
     private user: firebase.User;
     
-    cadastro = new BehaviorSubject<Cadastro>(new Cadastro());
+    cadastro: Observable<Cadastro>;
 
-    constructor(private angularFireAuth: AngularFireAuth, private agularFireDatabase: AngularFireDatabase) {
+    constructor(private angularFireAuth: AngularFireAuth, private agularFireDatabase: AngularFirestore) {
         this.angularFireAuth.authState.subscribe(user => {
-            // console.log("user: ", JSON.stringify(user));
+            
             this.user = user;
             let userInfo = new UserInfo();
             
             if (user != null) {
-
+                
                 userInfo.isAnonymous = user.isAnonymous;
                 userInfo.email = user.email;
                 userInfo.displayName = user.displayName;
                 userInfo.providerId = user.providerId;
                 userInfo.photoURL = user.photoURL;
                 userInfo.uid = user.uid;
-                this.agularFireDatabase.object("users/"+user.uid).subscribe((data)=>{
-                    this.cadastro.next(data);
-                });
+                
+                var tempCad = this.agularFireDatabase.doc<Cadastro>("users/"+user.uid);
+                
+                if(tempCad == undefined){
+                    this.cadastro = Observable.of(new Cadastro());
+                }else{
+                    this.cadastro = tempCad.valueChanges();
+                }
             } else {
                 this.user = null;
                 userInfo.isAnonymous = true;
@@ -63,7 +68,10 @@ export class AuthService {
     }
 
     currentCadastro(): Observable<Cadastro> {
-        return this.cadastro.asObservable();
+        if(this.cadastro == null){
+            this.cadastro = Observable.of(new Cadastro());
+        }
+        return this.cadastro;
     }
 
     logout(): Observable<string> {
@@ -161,7 +169,7 @@ export class AuthService {
         result.error("Not a supported authentication method: " + provider)
         return result.asObservable();
     }
-    resetPassword(code: string, password: string): firebase.Promise<any>{
+    resetPassword(code: string, password: string){
         return this.angularFireAuth.auth.confirmPasswordReset(code,password);
     }
 }

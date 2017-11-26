@@ -1,7 +1,7 @@
 import {Injectable, Inject} from "@angular/core";
 import * as firebase from 'firebase/app';
 import { AngularFireModule } from 'angularfire2';
-import { AngularFireDatabase } from 'angularfire2/database';
+import { AngularFirestore, AngularFirestoreDocument } from 'angularfire2/firestore';
 import {UserInfo} from "./user-info";
 import {Cadastro} from "./cadastro";
 import {AuthService} from "./auth.service";
@@ -20,36 +20,37 @@ export class DatabaseService {
         uid: null,
         data: null
     };
-
     
-     
-    constructor(private authService: AuthService, private agularFireDatabase: AngularFireDatabase, private notification: NotificationService,) {
+    private itemDoc: AngularFirestoreDocument<Cadastro>;
+    item: Observable<Cadastro>;
+    
+    constructor(private authService: AuthService, private agularFireDatabase: AngularFirestore, private notification: NotificationService,) {
         this.authService.currentUser();
        
     }
 
 
-    newRegistry(cadastro: Cadastro){
-        this.authService.currentUser().subscribe((userInfo)=>{
+    newRegistry(collection:string, data: any){
+        this.authService.currentUser().subscribe((userInfo)=>{ 
             if(userInfo.uid!=null){
-            //var usuario  = {nome: userInfo.data.nome.toUpperCase(), email: userInfo.data.email, cpf: userInfo.data.cpf, rg: userInfo.data.rg, celular: userInfo.data.celular, admin: false };
-            let ref = this.agularFireDatabase.object("users/"+userInfo.uid);
-            ref.set(cadastro).then(()=>{
-                
-                console.log("SUCESSO");
-                
-            },(error)=>{
-                console.log("ERRO");
-            });
+                //var usuario  = {nome: userInfo.data.nome.toUpperCase(), email: userInfo.data.email, cpf: userInfo.data.cpf, rg: userInfo.data.rg, celular: userInfo.data.celular, admin: false };
+                let ref = this.agularFireDatabase.doc(collection+"/"+userInfo.uid);
+                ref.set({...data}).then(()=>{
+                    
+                    console.log("SUCESSO"); 
+                    
+                },(error)=>{
+                    console.log("ERRO");
+                });
+            }
         }
-           }
        );
         
     }
 
     objectBy<T>(entidade: string, uid: string):Observable<T>{
-        let retorno = new Subject<T>();
-        this.agularFireDatabase.object(entidade+"/"+uid).subscribe(data=>{console.log(data); retorno.next(data)});
+         
+        let retorno = this.agularFireDatabase.doc<T>(entidade+"/"+uid).valueChanges();
         return retorno;
     }
 
